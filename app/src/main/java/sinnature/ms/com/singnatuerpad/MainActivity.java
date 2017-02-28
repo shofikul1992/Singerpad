@@ -2,6 +2,7 @@ package sinnature.ms.com.singnatuerpad;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,9 +16,14 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,8 +36,12 @@ public class MainActivity extends Activity {
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private SignaturePad mSignaturePad;
-    private Button mClearButton;
-    private Button mSaveButton;
+    private TextView mClearButton;
+    private TextView mSaveButton;
+    private Context mContext;
+
+    private String TAG = MainActivity.class.getSimpleName();
+    InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +49,15 @@ public class MainActivity extends Activity {
         verifyStoragePermissions(this);
         setContentView(R.layout.activity_main);
 
+        mContext = this;
+
         mSignaturePad = (SignaturePad) findViewById(R.id.signature_pad);
         mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
-                Toast.makeText(MainActivity.this, "OnStartSigning", Toast.LENGTH_SHORT).show();
+
             }
+
 
             @Override
             public void onSigned() {
@@ -59,8 +72,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        mClearButton = (Button) findViewById(R.id.clear_button);
-        mSaveButton = (Button) findViewById(R.id.save_button);
+        mClearButton = (TextView) findViewById(R.id.clear_button);
+        mSaveButton = (TextView) findViewById(R.id.save_button);
 
         mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +101,8 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+        add();
     }
 
     @Override
@@ -180,6 +195,34 @@ public class MainActivity extends Activity {
                     PERMISSIONS_STORAGE,
                     REQUEST_EXTERNAL_STORAGE
             );
+        }
+    }
+
+
+    public void add() {
+
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest_bannar = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest_bannar);
+
+
+        mInterstitialAd = new InterstitialAd(mContext);
+        // set the ad unit ID
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        // Load ads into Interstitial Ads
+        mInterstitialAd.loadAd(adRequest);
+        mInterstitialAd.setAdListener(new AdListener() {
+            public void onAdLoaded() {
+                showInterstitial();
+            }
+        });
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
         }
     }
 }

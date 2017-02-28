@@ -1,7 +1,13 @@
 <resources>
-    <string name="app_name">Singnatuerpad</string>
+    <string name="app_name">drow pen </string>
     <string name="agreement">I agree the terms and conditions.</string>
     <string name="clear_pad">Clear Pad</string>
     <string name="save_signature">Save Signature</string>
+    <!-- AdMob ad unit IDs -->
+    <string name="banner_home_footer">ca-app-pub-7219668276495521/1059352893</string>
+    <string name="interstitial_full_screen">ca-app-pub-7219668276495521/5210350894</string>
+
+
+
 
 </resources>

@@ -26,5 +26,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.github.gcacace:signature-pad:1.2.1'
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+
+
     testCompile 'junit:junit:4.12'
 }
